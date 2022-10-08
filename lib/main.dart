@@ -11,9 +11,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true),
       debugShowCheckedModeBanner: false,
-      initialRoute: 'home',
+      initialRoute: 'status',
       routes: {
         'home': (context) => HomePage(),
+        'status': (context) => StatusPage(),
       },
     );
   }
