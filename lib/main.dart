@@ -16,10 +16,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(useMaterial3: true),
         debugShowCheckedModeBanner: false,
-        initialRoute: 'status',
+        initialRoute: 'home',
         routes: {
-          'home': (context) => HomePage(),
-          'status': (context) => StatusPage(),
+          'home': (context) => const HomePage(),
+          'status': (context) => const StatusPage(),
         },
       ),
     );

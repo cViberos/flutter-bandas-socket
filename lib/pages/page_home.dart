@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flu_band_names/models/band.dart';
+import 'package:provider/provider.dart';
+
+import '../services/service_socket.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,10 +24,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final socketService = Provider.of<SocketService>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nombre de Bandas'),
         centerTitle: true,
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: (socketService.serverStatus == ServerStatus.online)
+                ? Icon(Icons.check_circle, color: Colors.blue[300])
+                : const Icon(Icons.offline_bolt, color: Colors.red),
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: bands.length,
@@ -43,8 +56,8 @@ class _HomePageState extends State<HomePage> {
       key: Key(band.id),
       direction: DismissDirection.startToEnd,
       onDismissed: (direction) {
-        print('direction: $direction');
-        print('id: ${band.id}');
+        // print('direction: $direction');
+        // print('id: ${band.id}');
         // Llamar el borrado en el server
       },
       background: Container(
