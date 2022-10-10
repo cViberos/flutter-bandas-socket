@@ -66,19 +66,27 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          _showGraph(),
+          bands.isNotEmpty ? _showGraph() : Container(),
           Expanded(
             child: ListView.builder(
               itemCount: bands.length,
               itemBuilder: (_, i) => _bandTile(bands[i]),
             ),
           ),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            child: const Text(
+                'Desarrollado por Cristian Gustavo Viberos\nSalta - Argentina, 10/10/2022'),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
         elevation: 1,
-        onPressed: addNewBand,
-        child: const Icon(Icons.add),
+        onPressed: socketService.serverStatus == ServerStatus.online
+            ? addNewBand
+            : null,
+        child: const Icon(Icons.add, size: 32),
       ),
     );
   }
