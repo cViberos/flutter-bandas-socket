@@ -16,11 +16,29 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Band> bands = [
-    Band(id: '0', name: 'Metalica', votes: 5),
-    Band(id: '1', name: 'Rammstein', votes: 9),
-    Band(id: '2', name: 'LinkinPark', votes: 3),
-    Band(id: '3', name: 'Slipknot', votes: 8),
+    // Band(id: '0', name: 'Metalica', votes: 5),
+    // Band(id: '1', name: 'Rammstein', votes: 9),
+    // Band(id: '2', name: 'LinkinPark', votes: 3),
+    // Band(id: '3', name: 'Slipknot', votes: 8),
   ];
+
+  @override
+  void initState() {
+    final socketService = Provider.of<SocketService>(context, listen: false);
+    socketService.socket.on('active-bands', (payload) {
+      bands = (payload as List).map((band) => Band.fromMap(band)).toList();
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final socketService = Provider.of<SocketService>(context, listen: false);
+    socketService.socket.off('active-bands');
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +46,22 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nombre de Bandas'),
+        title: const Text('La banda más piola'),
         centerTitle: true,
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 10),
             child: (socketService.serverStatus == ServerStatus.online)
-                ? Icon(Icons.check_circle, color: Colors.blue[300])
-                : const Icon(Icons.offline_bolt, color: Colors.red),
+                ? Icon(
+                    Icons.check_circle_rounded,
+                    color: Colors.green[400],
+                    size: 38,
+                  )
+                : Icon(
+                    Icons.offline_bolt_rounded,
+                    color: Colors.red[300],
+                    size: 38,
+                  ),
           )
         ],
       ),
@@ -52,6 +78,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _bandTile(Band band) {
+    final socketService = Provider.of<SocketService>(context, listen: false);
+
     return Dismissible(
       key: Key(band.id),
       direction: DismissDirection.startToEnd,
@@ -67,9 +95,9 @@ class _HomePageState extends State<HomePage> {
           alignment: Alignment.centerLeft,
           child: Row(
             children: const [
-              Icon(
-                Icons.delete,
-                color: Colors.white,
+              Padding(
+                padding: EdgeInsets.only(right: 5),
+                child: Icon(Icons.delete, color: Colors.white),
               ),
               Text(
                 'Borrar banda',
@@ -86,10 +114,11 @@ class _HomePageState extends State<HomePage> {
         ),
         title: Text(band.name),
         trailing: Text('${band.votes}', style: const TextStyle(fontSize: 20)),
-        onTap: (() {
+        onTap: () {
           // ignore: avoid_print
-          print(band.name);
-        }),
+          // print(band.id);
+          socketService.socket.emit('vote-band', {'id': band.id});
+        },
       ),
     );
   }

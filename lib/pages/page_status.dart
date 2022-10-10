@@ -8,7 +8,6 @@ class StatusPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final socketService = Provider.of<SocketService>(context);
-    // socketService.socket.emit();
 
     return Scaffold(
       body: Center(
