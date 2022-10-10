@@ -24,7 +24,10 @@ class SocketService with ChangeNotifier {
 
   // METODOS PRIVADOS
   void _initConfig() {
-    _socket = io.io('http://192.168.1.5:3000/', {
+    // Servidor local
+    // _socket = io.io('http://192.168.1.5:3000/', {
+    // Servidor en la nube
+    _socket = io.io('https://viberos-flutter-socket-server.herokuapp.com/', {
       'transports': ['websocket'],
       'autoConnect': true,
     });

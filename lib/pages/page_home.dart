@@ -201,9 +201,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Container(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       width: double.infinity,
-      height: 250,
+      // height: 230,
       child: PieChart(
         // Datos usados en la gráfica
         dataMap: dataMap,
@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
         // Espacio entre el gráfico y la tabla de contenidos
         chartLegendSpacing: 50,
         // Determina el tamaño del gráfico
-        chartRadius: MediaQuery.of(context).size.width / 2.2,
+        chartRadius: MediaQuery.of(context).size.width / 3.0,
         // Lista de colores para usar en las representaciones graficas
         // colorList: colorList,
         // Rotación del gráfico
@@ -220,7 +220,7 @@ class _HomePageState extends State<HomePage> {
         // Determina el tipo de graficos(anillo o torta)
         chartType: ChartType.ring,
         // Determina el ancho del gráfico se nota mas si se usa el tipo anillo
-        ringStrokeWidth: 38,
+        ringStrokeWidth: 30,
         // centerText: "Texto centro del grafico",
         legendOptions: const LegendOptions(
           // Determina si la tabla de referencias será vertical u horizontal
